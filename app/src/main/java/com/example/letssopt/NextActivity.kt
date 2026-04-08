@@ -3,6 +3,7 @@ package com.example.letssopt
 import android.content.Intent
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -64,7 +65,10 @@ class NextActivity : ComponentActivity() {
 fun NextGreeting(name: String, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
-    var text by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var passwordCheck by remember { mutableStateOf("") }
+    val allFilled = email.isNotEmpty() && password.isNotEmpty() && passwordCheck.isNotEmpty()
 
     Column(
         modifier = modifier
@@ -115,8 +119,8 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium,
             )
             TextField(
-                value = text,
-                onValueChange = {text = it},
+                value = email,
+                onValueChange = {email = it},
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {Text(
                     text = "이메일 주소를 입력하세요",
@@ -128,6 +132,7 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
+                    focusedTextColor = Color(0xFF666666),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -150,8 +155,8 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = text,
-                onValueChange = { text = it },
+                value = password,
+                onValueChange = { password = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {Text(
                     text = "비밀번호를 입력하세요",
@@ -163,6 +168,7 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
+                    focusedTextColor = Color(0xFF666666),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -185,8 +191,8 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = text,
-                onValueChange = { text = it },
+                value = passwordCheck,
+                onValueChange = { passwordCheck = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {Text(
                     text = "비밀번호를 다시 입력하세요",
@@ -198,6 +204,7 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
+                    focusedTextColor = Color(0xFF666666),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -209,13 +216,28 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(280.dp))
 
         Button(
-            onClick = { },
+            onClick = {
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    Toast.makeText(context,"회원가입 실패!", Toast.LENGTH_SHORT).show()
+                }
+                else if(password.length !in 8..12){
+                    Toast.makeText(context,"회원가입 실패!", Toast.LENGTH_SHORT).show()
+                }
+                else if(password != passwordCheck){
+                    Toast.makeText(context,"회원가입 실패!", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(context,"회원가입 성공!", Toast.LENGTH_SHORT).show()
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
+            enabled = allFilled,
             shape = RoundedCornerShape(size = 8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFE8003C)
+                containerColor = Color(0xFFE8003C),
+                disabledContainerColor = Color(0xFF555555)
             )
         ) {
             Text(

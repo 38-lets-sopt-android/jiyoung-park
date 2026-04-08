@@ -64,7 +64,8 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
-    var text by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -115,8 +116,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium,
             )
             TextField(
-                value = text,
-                onValueChange = {text = it},
+                value = email,
+                onValueChange = {email = it},
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {Text(
                     text = "이메일 주소를 입력하세요",
@@ -128,6 +129,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
+                    focusedTextColor = Color(0xFF666666),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -150,8 +152,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = text,
-                onValueChange = { text = it },
+                value = password,
+                onValueChange = { password = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {Text(
                     text = "비밀번호를 입력하세요",
@@ -163,6 +165,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
+                    focusedTextColor = Color(0xFF666666),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
