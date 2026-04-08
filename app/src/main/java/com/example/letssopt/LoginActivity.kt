@@ -40,6 +40,9 @@ import com.example.letssopt.ui.theme.LETSSOPTTheme
 import kotlin.jvm.java
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 
 class LoginActivity : ComponentActivity() {
     private var registeredEmail by mutableStateOf("")
@@ -182,6 +185,7 @@ fun Greeting(
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                     fontWeight = FontWeight.Medium)},
+                visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
