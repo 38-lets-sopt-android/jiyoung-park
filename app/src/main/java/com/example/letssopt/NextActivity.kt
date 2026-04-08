@@ -43,14 +43,14 @@ import androidx.compose.ui.unit.sp
 import com.example.letssopt.ui.theme.LETSSOPTTheme
 import kotlin.jvm.java
 
-class MainActivity : ComponentActivity() {
+class NextActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
+                    NextGreeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun NextGreeting(name: String, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
     var text by remember { mutableStateOf("") }
@@ -91,7 +91,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "이메일로 로그인",
+                text = "회원가입",
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.White,
                 fontSize = 20.sp,
@@ -156,23 +156,35 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             )
         }
 
-        Spacer(modifier = Modifier.height(334.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
-        Text(
-            text = "아직 계정이 없으신가요?  회원가입",
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable() {
-                    val intent = Intent(context,NextActivity::class.java)
-                    context.startActivity(intent)
-                },
-            color = Color(0xFF999999),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
-        )
+        Column (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Text(
+                text = "비밀번호 확인",
+                modifier = Modifier.fillMaxWidth(),
+                color = Color(0xFF999999),
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium
+            )
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {Text("비밀번호를 다시 입력하세요")},
+                shape = RoundedCornerShape(size = 8.dp),
+                colors = TextFieldDefaults.colors(
+                    unfocusedTextColor = Color(0xFF666666),
+                    unfocusedContainerColor = Color(0xFF2A2A2A),
+                    focusedContainerColor = Color(0xFF2A2A2A),
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                )
+            )
+        }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(280.dp))
 
         Button(
             onClick = { },
@@ -185,7 +197,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             )
         ) {
             Text(
-                text = "로그인",
+                text = "회원가입",
                 color = Color(0xFFFFFFFF),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
@@ -199,8 +211,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun NextGreetingPreview() {
     LETSSOPTTheme {
-        Greeting("Android")
+        NextGreeting("Android")
     }
 }
