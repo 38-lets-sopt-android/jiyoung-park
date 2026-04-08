@@ -2,27 +2,23 @@ package com.example.letssopt
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,19 +34,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.ui.theme.LETSSOPTTheme
-import kotlin.jvm.java
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import com.example.letssopt.R
 
-class MainActivity : ComponentActivity() {
+class NextActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
+                    NextGreeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -61,11 +55,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun NextGreeting(name: String, modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordCheck by remember { mutableStateOf("") }
+    val allFilled = email.isNotEmpty() && password.isNotEmpty() && passwordCheck.isNotEmpty()
 
     Column(
         modifier = modifier
@@ -92,7 +88,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "이메일로 로그인",
+                text = "회원가입",
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.White,
                 fontSize = 20.sp,
@@ -174,37 +170,79 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             )
         }
 
-        Spacer(modifier = Modifier.height(334.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
-        Text(
-            text = "아직 계정이 없으신가요?  회원가입",
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable() {
-                    val intent = Intent(context,NextActivity::class.java)
-                    context.startActivity(intent)
-                },
-            color = Color(0xFF999999),
-            fontSize = 14.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
-        )
+        Column (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Text(
+                text = "비밀번호 확인",
+                modifier = Modifier.fillMaxWidth(),
+                color = Color(0xFF999999),
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontWeight = FontWeight.Medium
+            )
+            TextField(
+                value = passwordCheck,
+                onValueChange = { passwordCheck = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {Text(
+                    text = "비밀번호를 다시 입력하세요",
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF666666),
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    fontWeight = FontWeight.Medium)},
+                shape = RoundedCornerShape(size = 8.dp),
+                colors = TextFieldDefaults.colors(
+                    unfocusedTextColor = Color(0xFF666666),
+                    focusedTextColor = Color(0xFF666666),
+                    unfocusedContainerColor = Color(0xFF2A2A2A),
+                    focusedContainerColor = Color(0xFF2A2A2A),
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent
+                )
+            )
+        }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(280.dp))
 
         Button(
-            onClick = { },
+            onClick = {
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    Toast.makeText(context,"이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else if(password.length !in 8..12){
+                    Toast.makeText(context,"비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
+                }
+                else if(password != passwordCheck){
+                    Toast.makeText(context,"비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(context,"회원가입 성공!", Toast.LENGTH_SHORT).show()
+
+                    val activity = context as NextActivity
+                    val resultIntent = Intent().apply {
+                        putExtra("email",email)
+                        putExtra("password",password)
+                    }
+                    activity.setResult(android.app.Activity.RESULT_OK, resultIntent)
+                    activity.finish()
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
+            enabled = allFilled,
             shape = RoundedCornerShape(size = 8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFE8003C)
+                containerColor = Color(0xFFE8003C),
+                disabledContainerColor = Color(0xFF555555)
             )
         ) {
             Text(
-                text = "로그인",
+                text = "회원가입",
                 color = Color(0xFFFFFFFF),
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_bold)),
@@ -219,8 +257,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun NextGreetingPreview() {
     LETSSOPTTheme {
-        Greeting("Android")
+        NextGreeting("Android")
     }
 }
