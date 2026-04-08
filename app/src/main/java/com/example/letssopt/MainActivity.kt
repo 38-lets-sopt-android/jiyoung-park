@@ -1,9 +1,6 @@
 package com.example.letssopt
 
-import android.R
 import android.content.Intent
-import android.graphics.fonts.Font
-import android.graphics.fonts.FontFamily
 import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.activity.ComponentActivity
@@ -42,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.ui.theme.LETSSOPTTheme
 import kotlin.jvm.java
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.example.letssopt.R
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +80,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
             color = Color(0xFFE8003C),
             fontSize = 36.sp,
-            //fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+            fontFamily = FontFamily(Font(R.font.pretendard_bold)),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
@@ -95,6 +95,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.White,
                 fontSize = 20.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_bold)),
                 fontWeight = FontWeight.Bold,
 
                 )
@@ -109,14 +110,21 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 text = "이메일",
                 modifier = Modifier.fillMaxWidth(),
                 color = Color(0xFF999999),
-                fontSize = 13.sp,
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 fontWeight = FontWeight.Medium,
             )
             TextField(
                 value = text,
                 onValueChange = {text = it},
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text("이메일 주소를 입력하세요")},
+                placeholder = {Text(
+                    text = "이메일 주소를 입력하세요",
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF666666),
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    fontWeight = FontWeight.Medium)},
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
@@ -137,14 +145,21 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 text = "비밀번호",
                 modifier = Modifier.fillMaxWidth(),
                 color = Color(0xFF999999),
-                fontSize = 13.sp,
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                 fontWeight = FontWeight.Medium
             )
             TextField(
                 value = text,
                 onValueChange = { text = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text("비밀번호를 입력하세요")},
+                placeholder = {Text(
+                    text = "비밀번호를 입력하세요",
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color(0xFF666666),
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                    fontWeight = FontWeight.Medium)},
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFF666666),
@@ -168,6 +183,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 },
             color = Color(0xFF999999),
             fontSize = 14.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
@@ -188,6 +204,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 text = "로그인",
                 color = Color(0xFFFFFFFF),
                 fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_bold)),
                 fontWeight = FontWeight.Bold
             )
 
