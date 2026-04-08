@@ -41,7 +41,7 @@ import kotlin.jvm.java
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 
-class MainActivity : ComponentActivity() {
+class LoginActivity : ComponentActivity() {
     private var registeredEmail by mutableStateOf("")
     private var registeredPassword by mutableStateOf("")
     private val registerLauncher = registerForActivityResult(
@@ -217,6 +217,8 @@ fun Greeting(
             onClick = {
                 if (email == registeredEmail && password == registeredPassword){
                     Toast.makeText(context,"로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, MainActivity2::class.java)
+                    context.startActivity(intent)
                 }
                 else {
                     Toast.makeText(context,"이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
