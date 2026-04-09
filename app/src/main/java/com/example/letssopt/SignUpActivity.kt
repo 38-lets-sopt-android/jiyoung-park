@@ -134,8 +134,9 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Medium)},
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    unfocusedTextColor = Color(0xFF666666),
-                    focusedTextColor = Color(0xFF666666),
+                    disabledTextColor = Color(0xFF666666),
+                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -171,8 +172,9 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    unfocusedTextColor = Color(0xFF666666),
-                    focusedTextColor = Color(0xFF666666),
+                    disabledTextColor = Color(0xFF666666),
+                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -208,8 +210,9 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    unfocusedTextColor = Color(0xFF666666),
-                    focusedTextColor = Color(0xFF666666),
+                    disabledTextColor = Color(0xFF666666),
+                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
                     focusedContainerColor = Color(0xFF2A2A2A),
                     unfocusedIndicatorColor = Color.Transparent,
@@ -249,13 +252,14 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
             enabled = allFilled,
             shape = RoundedCornerShape(size = 8.dp),
             colors = ButtonDefaults.buttonColors(
+                contentColor = Color(0xFFFFFFFF),
+                disabledContentColor = Color(0xFF666666),
                 containerColor = Color(0xFFE8003C),
-                disabledContainerColor = Color(0xFF555555)
+                disabledContainerColor = Color(0xFF333333)
             )
         ) {
             Text(
                 text = "회원가입",
-                color = Color(0xFFFFFFFF),
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_bold)),
                 fontWeight = FontWeight.Bold
