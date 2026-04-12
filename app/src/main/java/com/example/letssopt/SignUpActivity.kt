@@ -224,25 +224,27 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                when {
+                    (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) ->
                     Toast.makeText(context,"이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
-                else if(password.length !in 8..12){
-                    Toast.makeText(context,"비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
-                }
-                else if(password != passwordCheck){
-                    Toast.makeText(context,"비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    Toast.makeText(context,"회원가입 성공!", Toast.LENGTH_SHORT).show()
 
-                    val activity = context as NextActivity
-                    val resultIntent = Intent().apply {
-                        putExtra("email",email)
-                        putExtra("password",password)
+                    (password.length !in 8..12) ->
+                    Toast.makeText(context,"비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
+
+                    (password != passwordCheck) ->
+                    Toast.makeText(context,"비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+
+                    else -> {
+                        Toast.makeText(context, "회원가입 성공!", Toast.LENGTH_SHORT).show()
+
+                        val activity = context as NextActivity
+                        val resultIntent = Intent().apply {
+                            putExtra("email", email)
+                            putExtra("password", password)
+                        }
+                        activity.setResult(android.app.Activity.RESULT_OK, resultIntent)
+                        activity.finish()
                     }
-                    activity.setResult(android.app.Activity.RESULT_OK, resultIntent)
-                    activity.finish()
                 }
             },
             modifier = Modifier
