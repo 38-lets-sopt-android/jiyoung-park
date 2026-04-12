@@ -57,10 +57,10 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
-            statusBarStyle = androidx.activity.SystemBarStyle.dark(
+            statusBarStyle = SystemBarStyle.dark(
                 android.graphics.Color.TRANSPARENT
             ),
-            navigationBarStyle = androidx.activity.SystemBarStyle.dark(
+            navigationBarStyle = SystemBarStyle.dark(
                 android.graphics.Color.TRANSPARENT
             )
         )
@@ -69,7 +69,6 @@ class LoginActivity : ComponentActivity() {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
                     Greeting(
-                        name = "Android",
                         modifier = Modifier.padding(innerPadding),
                         launcher = registerLauncher,
                         registeredEmail = registeredEmail,
@@ -83,7 +82,6 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(
-    name: String,
     modifier: Modifier = Modifier,
     launcher: androidx.activity.result.ActivityResultLauncher<Intent>? = null,
     registeredEmail: String = "",
@@ -106,8 +104,7 @@ fun Greeting(
 
         Text(
             text = "watcha",
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             color = Color(0xFFE8003C),
             fontSize = 36.sp,
             fontFamily = FontFamily(Font(R.font.pretendard_bold)),
@@ -117,19 +114,14 @@ fun Greeting(
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "이메일로 로그인",
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-                fontWeight = FontWeight.Bold,
-
-                )
-        }
+        Text(
+            text = "이메일로 로그인",
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.White,
+            fontSize = 20.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+            fontWeight = FontWeight.Bold,
+            )
 
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -265,6 +257,6 @@ fun Greeting(
 @Composable
 fun GreetingPreview() {
     LETSSOPTTheme {
-        Greeting("Android")
+        Greeting()
     }
 }

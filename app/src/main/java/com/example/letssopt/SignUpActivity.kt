@@ -37,8 +37,6 @@ import com.example.letssopt.ui.theme.LETSSOPTTheme
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.foundation.text.KeyboardOptions
 
 class NextActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +53,6 @@ class NextActivity : ComponentActivity() {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
                     NextGreeting(
-                        name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -65,7 +62,7 @@ class NextActivity : ComponentActivity() {
 }
 
 @Composable
-fun NextGreeting(name: String, modifier: Modifier = Modifier) {
+fun NextGreeting(modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
@@ -94,19 +91,14 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "회원가입",
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-                fontWeight = FontWeight.Bold,
-
-                )
-        }
+        Text(
+            text = "회원가입",
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.White,
+            fontSize = 20.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_bold)),
+            fontWeight = FontWeight.Bold,
+            )
 
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -125,16 +117,18 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 value = email,
                 onValueChange = {email = it},
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text(
-                    text = "이메일 주소를 입력하세요",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF666666),
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontWeight = FontWeight.Medium)},
+                placeholder = {
+                    Text(
+                        text = "이메일 주소를 입력하세요",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color(0xFF666666),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight.Medium
+                    )
+                              },
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    disabledTextColor = Color(0xFF666666),
                     unfocusedTextColor = Color(0xFFFFFFFF),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
@@ -162,17 +156,19 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 value = password,
                 onValueChange = { password = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text(
-                    text = "비밀번호를 입력하세요",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF666666),
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontWeight = FontWeight.Medium)},
+                placeholder = {
+                    Text(
+                        text = "비밀번호를 입력하세요",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color(0xFF666666),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight.Medium
+                    )
+                              },
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    disabledTextColor = Color(0xFF666666),
                     unfocusedTextColor = Color(0xFFFFFFFF),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
@@ -200,17 +196,19 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
                 value = passwordCheck,
                 onValueChange = { passwordCheck = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text(
-                    text = "비밀번호를 다시 입력하세요",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF666666),
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontWeight = FontWeight.Medium)},
+                placeholder = {
+                    Text(
+                        text = "비밀번호를 다시 입력하세요",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color(0xFF666666),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight.Medium
+                    )
+                              },
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    disabledTextColor = Color(0xFF666666),
                     unfocusedTextColor = Color(0xFFFFFFFF),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
@@ -275,6 +273,6 @@ fun NextGreeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun NextGreetingPreview() {
     LETSSOPTTheme {
-        NextGreeting("Android")
+        NextGreeting()
     }
 }
