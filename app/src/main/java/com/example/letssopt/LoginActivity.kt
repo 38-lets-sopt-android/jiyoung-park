@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.ui.theme.LETSSOPTTheme
+import androidx.activity.result.ActivityResultLauncher
 
 
 class LoginActivity : ComponentActivity() {
@@ -83,7 +84,7 @@ class LoginActivity : ComponentActivity() {
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    launcher: androidx.activity.result.ActivityResultLauncher<Intent>? = null,
+    launcher: ActivityResultLauncher<Intent>? = null,
     registeredEmail: String = "",
     registeredPassword: String = ""
 ) {
@@ -91,7 +92,7 @@ fun LoginScreen(
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val allFilled = email.isNotEmpty() && password.isNotEmpty()
+    val allFilled = email.isNotBlank() && password.isNotBlank()
 
 
     Column(

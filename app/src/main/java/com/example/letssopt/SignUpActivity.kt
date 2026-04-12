@@ -37,6 +37,7 @@ import com.example.letssopt.ui.theme.LETSSOPTTheme
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import android.util.Patterns
 
 class NextActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +69,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordCheck by remember { mutableStateOf("") }
-    val allFilled = email.isNotEmpty() && password.isNotEmpty() && passwordCheck.isNotEmpty()
+    val allFilled = email.isNotBlank() && password.isNotBlank() && passwordCheck.isNotBlank()
 
     Column(
         modifier = modifier
@@ -223,7 +224,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     Toast.makeText(context,"이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else if(password.length !in 8..12){
