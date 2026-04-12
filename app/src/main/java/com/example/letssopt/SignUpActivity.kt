@@ -52,7 +52,7 @@ class NextActivity : ComponentActivity() {
         setContent {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
-                    NextGreeting(
+                    SignUpScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -62,7 +62,7 @@ class NextActivity : ComponentActivity() {
 }
 
 @Composable
-fun NextGreeting(modifier: Modifier = Modifier) {
+fun SignUpScreen(modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
@@ -271,8 +271,8 @@ fun NextGreeting(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun NextGreetingPreview() {
+private fun SignUpScreenPreview() {
     LETSSOPTTheme {
-        NextGreeting()
+        SignUpScreen()
     }
 }

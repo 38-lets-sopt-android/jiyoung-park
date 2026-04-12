@@ -68,7 +68,7 @@ class LoginActivity : ComponentActivity() {
         setContent {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
-                    Greeting(
+                    LoginScreen(
                         modifier = Modifier.padding(innerPadding),
                         launcher = registerLauncher,
                         registeredEmail = registeredEmail,
@@ -81,7 +81,7 @@ class LoginActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(
+fun LoginScreen(
     modifier: Modifier = Modifier,
     launcher: androidx.activity.result.ActivityResultLauncher<Intent>? = null,
     registeredEmail: String = "",
@@ -255,8 +255,8 @@ fun Greeting(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+private fun LoginScreenPreview() {
     LETSSOPTTheme {
-        Greeting()
+        LoginScreen()
     }
 }
