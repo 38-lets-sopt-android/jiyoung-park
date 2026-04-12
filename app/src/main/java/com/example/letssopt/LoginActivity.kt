@@ -199,7 +199,7 @@ fun LoginScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(334.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Text(
             text = "아직 계정이 없으신가요?  회원가입",

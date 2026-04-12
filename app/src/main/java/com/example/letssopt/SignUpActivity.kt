@@ -220,7 +220,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             )
         }
 
-        Spacer(modifier = Modifier.height(280.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
