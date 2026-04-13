@@ -42,14 +42,6 @@ import android.util.Patterns
 class NextActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(
-            statusBarStyle = androidx.activity.SystemBarStyle.dark(
-                android.graphics.Color.TRANSPARENT
-            ),
-            navigationBarStyle = androidx.activity.SystemBarStyle.dark(
-                android.graphics.Color.TRANSPARENT
-            )
-        )
         setContent {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
