@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
@@ -43,9 +43,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.R
 import com.example.letssopt.ui.ui.theme.LETSSOPTTheme
-import androidx.compose.foundation.layout.WindowInsets
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,29 +65,12 @@ class HomeActivity : ComponentActivity() {
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel()
 ) {
-    val movies = listOf(
-        R.drawable.img_main_manifest,
-        R.drawable.img_main_crime,
-        R.drawable.img_main_jeju,
-    )
-    val dramas = listOf(
-        R.drawable.img_main_love,
-        R.drawable.img_main_five,
-        R.drawable.img_main_hailmary,
-        R.drawable.img_main_love
-    )
-    data class WatchaPartyItem(
-        val imageRes: Int,
-        val time: String,
-        val title: String,
-    )
-
-    val watchaParties = listOf(
-        WatchaPartyItem(R.drawable.img_main_king, "오늘 21:13에 시작", "# 왕과사는 남자"),
-        WatchaPartyItem(R.drawable.img_main_exhuma, "오늘 22:22에 시작", "# 파묘"),
-    )
+    val movies = viewModel.movies
+    val dramas = viewModel.dramas
+    val watchaParties = viewModel.watchaParties
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -118,87 +101,36 @@ fun HomeScreen(
             }
         },
         bottomBar = {
-            val context = LocalContext.current
-
+            val context = androidx.compose.ui.platform.LocalContext.current
             NavigationBar(
                 containerColor = Color(0xFF1A1A1A),
                 windowInsets = WindowInsets(0.dp)
             ) {
-                NavigationBarItem(
-                    selected = true,
-                    onClick = {
-                        context.startActivity(Intent(context, HomeActivity::class.java))
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_main_24),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
+                viewModel.navItems.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = viewModel.selectedTabIndex == index,
+                        onClick = {
+                            viewModel.updateSelectedTab(index)
+                            val intent = Intent(context, item.activityClass)
+                            context.startActivity(intent)
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(item.iconRes),
+                                contentDescription = item.title,
+                                tint = if (viewModel.selectedTabIndex == index) Color.White else Color.Gray
+                            )
+                        },
+                        label = { Text(item.title) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Color.White,
+                            unselectedIconColor = Color.Gray,
+                            selectedTextColor = Color.White,
+                            unselectedTextColor = Color.Gray,
+                            indicatorColor = Color.Transparent
                         )
-                    },
-                    label = { Text("메인") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        unselectedIconColor = Color.Gray,
-                        selectedTextColor = Color.White,
-                        unselectedTextColor = Color.Gray,
-                        indicatorColor = Color.Transparent
                     )
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        context.startActivity(Intent(context, PurchaseActivity::class.java))
-                    },
-                    icon = { Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_category_24),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                    ) },
-                    label = { Text("개별 구매") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        context.startActivity(Intent(context, WebtoonActivity::class.java))
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_wallet_24),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                        )
-                    },
-                    label = { Text("웹툰") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        context.startActivity(Intent(context, SearchActivity::class.java))
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_search_24),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                        )
-                    },
-                    label = { Text("찾기") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        context.startActivity(Intent(context, StorageActivity::class.java))
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_folder_24),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                        )
-                    },
-                    label = { Text("보관함") }
-                )
+                }
             }
         }
     ) { innerPadding ->
