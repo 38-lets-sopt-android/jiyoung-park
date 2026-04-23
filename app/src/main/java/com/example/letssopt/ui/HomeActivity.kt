@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -69,6 +72,16 @@ fun HomeScreen(
         R.drawable.img_main_hailmary,
         R.drawable.img_main_love
     )
+    data class WatchaPartyItem(
+        val imageRes: Int,
+        val time: String,
+        val title: String,
+    )
+
+    val watchaParties = listOf(
+        WatchaPartyItem(R.drawable.img_main_king, "오늘 21:13에 시작", "# 왕과사는 남자"),
+        WatchaPartyItem(R.drawable.img_main_exhuma, "오늘 22:22에 시작", "# 파묘"),
+    )
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -104,6 +117,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(Color(0xFF141414))
                 .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
         ) {
             Text(
                 text = "방금 막 도착한 신상 콘텐츠",
@@ -256,7 +270,93 @@ fun HomeScreen(
                     }
                 }
             }
-            
+            Spacer(Modifier.height(23.dp))
+            Column(
+            ) {
+                Row() {
+                    Text(
+                        text = "왓챠 파티",
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .weight(1f),
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "더보기",
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                        color = Color(0xFF999999),
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight(300)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(watchaParties.size) { index ->
+                        val item = watchaParties[index]
+
+                        //배경
+                        Box(
+                            modifier = Modifier
+                                .width(196.dp)
+                                .height(185.dp)
+                                .background(Color(0xFF2A2A2A))
+                        ) {
+
+                            // 이미지
+                            Image(
+                                painter = painterResource(id = item.imageRes),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .width(196.dp)
+                                    .height(139.dp),
+                                contentScale = ContentScale.Crop
+                            )
+
+                            // 시간 + 제목 텍스트 (하단)
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .padding(horizontal = 8.dp)
+                            ) {
+                                Text(
+                                    text = item.time,
+                                    color = Color(0xFFE8003C),
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight(500),
+                                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                                )
+                                Text(
+                                    text = item.title,
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                                )
+
+                            }
+                            Icon(
+                                imageVector = ImageVector.vectorResource(R.drawable.ic_main_notification_24),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(top = 7.dp, end = 5.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
 
         }
 
