@@ -31,7 +31,10 @@ class MainActivity2 : ComponentActivity() {
         )
         setContent {
             LETSSOPTTheme {
-                Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Black
+                ) { innerPadding ->
                     MainScreen(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
