@@ -12,6 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LETSSOPT">
         <activity
+            android:name=".ui.StorageActivity"
+            android:exported="false"
+            android:label="@string/title_activity_storage"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".ui.SearchActivity"
+            android:exported="false"
+            android:label="@string/title_activity_search"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".ui.WebtoonActivity"
+            android:exported="false"
+            android:label="@string/title_activity_webtoon"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".ui.PurchaseActivity"
+            android:exported="false"
+            android:label="@string/title_activity_purchase"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
             android:name=".ui.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"

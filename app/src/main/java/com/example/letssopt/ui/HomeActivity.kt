@@ -1,5 +1,6 @@
 package com.example.letssopt.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
@@ -40,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.R
 import com.example.letssopt.ui.ui.theme.LETSSOPTTheme
+import androidx.compose.foundation.layout.WindowInsets
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +114,90 @@ fun HomeScreen(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_main_profile_24),
                     contentDescription = null,
                     tint = Color.Unspecified
+                )
+            }
+        },
+        bottomBar = {
+            val context = LocalContext.current
+
+            NavigationBar(
+                containerColor = Color(0xFF1A1A1A),
+                windowInsets = WindowInsets(0.dp)
+            ) {
+                NavigationBarItem(
+                    selected = true,
+                    onClick = {
+                        context.startActivity(Intent(context, HomeActivity::class.java))
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_main_24),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                        )
+                    },
+                    label = { Text("메인") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.White,
+                        unselectedIconColor = Color.Gray,
+                        selectedTextColor = Color.White,
+                        unselectedTextColor = Color.Gray,
+                        indicatorColor = Color.Transparent
+                    )
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {
+                        context.startActivity(Intent(context, PurchaseActivity::class.java))
+                    },
+                    icon = { Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_category_24),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                    ) },
+                    label = { Text("개별 구매") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {
+                        context.startActivity(Intent(context, WebtoonActivity::class.java))
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_wallet_24),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                        )
+                    },
+                    label = { Text("웹툰") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {
+                        context.startActivity(Intent(context, SearchActivity::class.java))
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_search_24),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                        )
+                    },
+                    label = { Text("찾기") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {
+                        context.startActivity(Intent(context, StorageActivity::class.java))
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_bottom_bar_folder_24),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                        )
+                    },
+                    label = { Text("보관함") }
                 )
             }
         }
