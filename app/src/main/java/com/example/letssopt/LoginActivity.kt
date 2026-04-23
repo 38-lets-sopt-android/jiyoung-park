@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.letssopt.ui.HomeActivity
 import com.example.letssopt.ui.theme.LETSSOPTTheme
 
 
@@ -221,7 +222,7 @@ fun LoginScreen(
             onClick = {
                 if (email == registeredEmail && password == registeredPassword) {
                     Toast.makeText(context, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(context, MainActivity2::class.java)
+                    val intent = Intent(context, HomeActivity::class.java)
                     context.startActivity(intent)
                 } else {
                     Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
