@@ -1,12 +1,12 @@
 package com.example.letssopt
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,17 +39,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.letssopt.ui.HomeActivity
 import com.example.letssopt.ui.theme.LETSSOPTTheme
-import androidx.activity.result.ActivityResultLauncher
-
 
 class LoginActivity : ComponentActivity() {
     private var registeredEmail by mutableStateOf("")
     private var registeredPassword by mutableStateOf("")
     private val registerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ){ result ->
-        if(result.resultCode == RESULT_OK){
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
             registeredEmail = result.data?.getStringExtra("email") ?: ""
             registeredPassword = result.data?.getStringExtra("password") ?: ""
         }
@@ -58,9 +57,19 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val pref = getSharedPreferences("auth", MODE_PRIVATE)
+        if (pref.getBoolean("isLoggedIn", false)) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+            return
+        }
+
         setContent {
             LETSSOPTTheme {
-                Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Black
+                ) { innerPadding ->
                     LoginScreen(
                         modifier = Modifier.padding(innerPadding),
                         launcher = registerLauncher,
@@ -114,7 +123,7 @@ fun LoginScreen(
             fontSize = 20.sp,
             fontFamily = FontFamily(Font(R.font.pretendard_bold)),
             fontWeight = FontWeight.Bold,
-            )
+        )
 
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -131,15 +140,18 @@ fun LoginScreen(
             )
             TextField(
                 value = email,
-                onValueChange = {email = it},
+                onValueChange = { email = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text(
-                    text = "이메일 주소를 입력하세요",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF666666),
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontWeight = FontWeight.Medium)},
+                placeholder = {
+                    Text(
+                        text = "이메일 주소를 입력하세요",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color(0xFF666666),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight.Medium
+                    )
+                },
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     disabledTextColor = Color(0xFF666666),
@@ -155,9 +167,9 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        Column (
+        Column(
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             Text(
                 text = "비밀번호",
                 modifier = Modifier.fillMaxWidth(),
@@ -170,13 +182,16 @@ fun LoginScreen(
                 value = password,
                 onValueChange = { password = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {Text(
-                    text = "비밀번호를 입력하세요",
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color(0xFF666666),
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                    fontWeight = FontWeight.Medium)},
+                placeholder = {
+                    Text(
+                        text = "비밀번호를 입력하세요",
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color(0xFF666666),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                        fontWeight = FontWeight.Medium
+                    )
+                },
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
@@ -212,13 +227,15 @@ fun LoginScreen(
 
         Button(
             onClick = {
-                if (email == registeredEmail && password == registeredPassword){
-                    Toast.makeText(context,"로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(context, MainActivity2::class.java)
+                if (email == registeredEmail && password == registeredPassword) {
+                    val pref = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    pref.edit().putBoolean("isLoggedIn", true).apply()
+
+                    Toast.makeText(context, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, HomeActivity::class.java)
                     context.startActivity(intent)
-                }
-                else {
-                    Toast.makeText(context,"이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier

@@ -2,10 +2,10 @@ package com.example.letssopt
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,23 +28,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.ui.theme.LETSSOPTTheme
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import android.util.Patterns
 
 class NextActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LETSSOPTTheme {
-                Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Black
+                ) { innerPadding ->
                     SignUpScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -91,7 +93,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             fontSize = 20.sp,
             fontFamily = FontFamily(Font(R.font.pretendard_bold)),
             fontWeight = FontWeight.Bold,
-            )
+        )
 
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -108,7 +110,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             )
             TextField(
                 value = email,
-                onValueChange = {email = it},
+                onValueChange = { email = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
@@ -119,7 +121,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                         fontWeight = FontWeight.Medium
                     )
-                              },
+                },
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color(0xFFFFFFFF),
@@ -134,9 +136,9 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        Column (
+        Column(
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             Text(
                 text = "비밀번호",
                 modifier = Modifier.fillMaxWidth(),
@@ -158,7 +160,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                         fontWeight = FontWeight.Medium
                     )
-                              },
+                },
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
@@ -174,9 +176,9 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        Column (
+        Column(
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             Text(
                 text = "비밀번호 확인",
                 modifier = Modifier.fillMaxWidth(),
@@ -198,7 +200,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
                         fontWeight = FontWeight.Medium
                     )
-                              },
+                },
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
@@ -217,14 +219,14 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         Button(
             onClick = {
                 when {
-                    (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) ->
-                    Toast.makeText(context,"이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
+                        Toast.makeText(context, "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
 
-                    (password.length !in 8..12) ->
-                    Toast.makeText(context,"비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
+                    password.length !in 8..12 ->
+                        Toast.makeText(context, "비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
 
-                    (password != passwordCheck) ->
-                    Toast.makeText(context,"비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    password != passwordCheck ->
+                        Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
 
                     else -> {
                         Toast.makeText(context, "회원가입 성공!", Toast.LENGTH_SHORT).show()

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LETSSOPT</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_purchase">PurchaseActivity</string>
+    <string name="title_activity_webtoon">WebtoonActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_storage">StorageActivity</string>
 </resources>
