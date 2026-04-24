@@ -14,8 +14,7 @@ data class WatchaPartyItem(
 
 data class BottomNavItem(
     val title: String,
-    val iconRes: Int,
-    val activityClass: Class<*>
+    val iconRes: Int
 )
 
 class HomeViewModel : ViewModel() {
@@ -39,11 +38,11 @@ class HomeViewModel : ViewModel() {
 
     // 3. 바텀바 상태 관리
     val navItems = listOf(
-        BottomNavItem("메인", R.drawable.ic_bottom_bar_main_24, HomeActivity::class.java),
-        BottomNavItem("개별 구매", R.drawable.ic_bottom_bar_category_24, PurchaseActivity::class.java),
-        BottomNavItem("웹툰", R.drawable.ic_bottom_bar_wallet_24, WebtoonActivity::class.java),
-        BottomNavItem("찾기", R.drawable.ic_bottom_bar_search_24, SearchActivity::class.java),
-        BottomNavItem("보관함", R.drawable.ic_bottom_bar_folder_24, StorageActivity::class.java)
+        BottomNavItem("메인", R.drawable.ic_bottom_bar_main_24),
+        BottomNavItem("개별 구매", R.drawable.ic_bottom_bar_category_24),
+        BottomNavItem("웹툰", R.drawable.ic_bottom_bar_wallet_24),
+        BottomNavItem("찾기", R.drawable.ic_bottom_bar_search_24),
+        BottomNavItem("보관함", R.drawable.ic_bottom_bar_folder_24)
     )
 
     var selectedTabIndex by mutableStateOf(0)
