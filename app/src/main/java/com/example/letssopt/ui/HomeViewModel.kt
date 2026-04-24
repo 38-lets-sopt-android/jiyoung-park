@@ -6,14 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.letssopt.R
 
-// 1. 데이터 클래스들을 뷰모델 파일 상단이나 외부에 정의합니다.
 data class WatchaPartyItem(
     val imageRes: Int,
     val time: String,
     val title: String,
 )
 
-// 바텀바 아이템을 위한 데이터 클래스도 만들면 관리가 편해요!
 data class BottomNavItem(
     val title: String,
     val iconRes: Int,
@@ -21,8 +19,6 @@ data class BottomNavItem(
 )
 
 class HomeViewModel : ViewModel() {
-
-    // 2. 리스트 데이터들을 뷰모델 안으로 옮깁니다.
     val movies = listOf(
         R.drawable.img_main_manifest,
         R.drawable.img_main_crime,

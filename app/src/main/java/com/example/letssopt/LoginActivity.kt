@@ -1,5 +1,6 @@
 package com.example.letssopt
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -41,7 +42,6 @@ import androidx.compose.ui.unit.sp
 import com.example.letssopt.ui.HomeActivity
 import com.example.letssopt.ui.theme.LETSSOPTTheme
 
-
 class LoginActivity : ComponentActivity() {
     private var registeredEmail by mutableStateOf("")
     private var registeredPassword by mutableStateOf("")
@@ -56,6 +56,13 @@ class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pref = getSharedPreferences("auth", MODE_PRIVATE)
+        if (pref.getBoolean("isLoggedIn", false)) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+            return
+        }
 
         setContent {
             LETSSOPTTheme {
@@ -221,6 +228,9 @@ fun LoginScreen(
         Button(
             onClick = {
                 if (email == registeredEmail && password == registeredPassword) {
+                    val pref = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    pref.edit().putBoolean("isLoggedIn", true).apply()
+
                     Toast.makeText(context, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, HomeActivity::class.java)
                     context.startActivity(intent)
