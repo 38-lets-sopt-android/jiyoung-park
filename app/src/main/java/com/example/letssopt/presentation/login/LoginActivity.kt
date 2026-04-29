@@ -40,8 +40,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.letssopt.R
-import com.example.letssopt.presentation.signup.NextActivity
 import com.example.letssopt.presentation.main.MainActivity
+import com.example.letssopt.presentation.signup.NextActivity
 import com.example.letssopt.ui.theme.LETSSOPTTheme
 
 class LoginActivity : ComponentActivity() {
@@ -59,8 +59,11 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val pref = getSharedPreferences("auth", MODE_PRIVATE)
-        if (pref.getBoolean("isLoggedIn", false)) {
+        val PREFERENCES_NAME = "auth"
+        val IS_LOGGED_IN = "isLoggedIn"
+
+        val pref = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
+        if (pref.getBoolean(IS_LOGGED_IN, false)) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
             return

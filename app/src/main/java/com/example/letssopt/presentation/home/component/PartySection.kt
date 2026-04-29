@@ -71,27 +71,33 @@ fun PartySection(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(contents) { content ->
-                Box(
-                    modifier = Modifier
-                        .width(196.dp)
-                        .height(185.dp)
-                        .background(Color(0xFF2A2A2A))
+                Column (
+                    modifier = Modifier.width(196.dp)
                 ) {
+                    Box{
+                        Image(
+                            painter = painterResource(id = content.imageRes),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(196.dp)
+                                .height(139.dp),
+                            contentScale = ContentScale.Crop
+                        )
 
-                    // 이미지
-                    Image(
-                        painter = painterResource(id = content.imageRes),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(196.dp)
-                            .height(139.dp),
-                        contentScale = ContentScale.Crop
-                    )
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_main_notification_24),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(top = 7.dp, end = 5.dp)
+                        )
+                    }
 
-                    // 시간 + 제목 텍스트 (하단)
                     Column(
                         modifier = Modifier
-                            .align(Alignment.BottomStart)
+                            .width(196.dp)
+                            .background(Color(0xFF2A2A2A))
                             .padding(horizontal = 8.dp)
                     ) {
                         Text(
@@ -101,6 +107,7 @@ fun PartySection(
                             fontWeight = FontWeight(500),
                             fontFamily = FontFamily(Font(R.font.pretendard_regular))
                         )
+
                         Text(
                             text = content.title,
                             color = Color.White,
@@ -110,15 +117,6 @@ fun PartySection(
                         )
 
                     }
-
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_main_notification_24),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(top = 7.dp, end = 5.dp)
-                    )
                 }
             }
         }
