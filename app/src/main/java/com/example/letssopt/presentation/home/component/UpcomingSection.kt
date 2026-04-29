@@ -45,8 +45,8 @@ fun UpcomimgSection(
                     .weight(1f),
                 color = Color.White,
                 fontSize = 20.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight.Bold
+                fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+                fontWeight = FontWeight(600)
             )
 
             Text(
@@ -55,7 +55,7 @@ fun UpcomimgSection(
                     .padding(horizontal = 16.dp),
                 color = Color(0xFF999999),
                 fontSize = 12.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontFamily = FontFamily(Font(R.font.pretendard_light)),
                 fontWeight = FontWeight(300)
             )
         }

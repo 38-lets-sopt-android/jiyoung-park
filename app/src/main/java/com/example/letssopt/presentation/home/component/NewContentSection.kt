@@ -44,8 +44,8 @@ fun NewContentSection(
                 .padding(horizontal = 19.dp),
             color = Color.White,
             fontSize = 20.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight.Bold
+            fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+            fontWeight = FontWeight(600)
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -57,8 +57,8 @@ fun NewContentSection(
                 .padding(horizontal = 19.dp),
             color = Color(0xFFBABAC1),
             fontSize = 18.sp,
-            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-            fontWeight = FontWeight.Bold
+            fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+            fontWeight = FontWeight(600)
         )
 
         Spacer(modifier = Modifier.height(24.dp))

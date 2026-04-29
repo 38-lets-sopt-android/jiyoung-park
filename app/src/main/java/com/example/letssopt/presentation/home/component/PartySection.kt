@@ -50,15 +50,15 @@ fun PartySection(
                     .weight(1f),
                 color = Color.White,
                 fontSize = 20.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight.Bold
+                fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+                fontWeight = FontWeight(600)
             )
             Text(
                 text = "더보기",
                 modifier = Modifier.padding(horizontal = 16.dp),
                 color = Color(0xFF999999),
                 fontSize = 12.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+                fontFamily = FontFamily(Font(R.font.pretendard_light)),
                 fontWeight = FontWeight(300)
             )
         }
@@ -105,7 +105,7 @@ fun PartySection(
                             color = Color(0xFFE8003C),
                             fontSize = 12.sp,
                             fontWeight = FontWeight(500),
-                            fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                            fontFamily = FontFamily(Font(R.font.pretendard_medium))
                         )
 
                         Text(
@@ -113,7 +113,7 @@ fun PartySection(
                             color = Color.White,
                             fontSize = 12.sp,
                             fontWeight = FontWeight(600),
-                            fontFamily = FontFamily(Font(R.font.pretendard_regular))
+                            fontFamily = FontFamily(Font(R.font.pretendard_semibold))
                         )
 
                     }
