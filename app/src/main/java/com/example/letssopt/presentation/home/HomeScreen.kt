@@ -21,10 +21,10 @@ fun HomeRoute(
     modifier: Modifier = Modifier,
 ){
     HomeScreen(
-        newContents = viewModel.contents,
-        whatgorismContents = viewModel.whatgorisms,
-        upcomingContents = viewModel.upcomings,
-        partyContents = viewModel.watchaParties,
+        newContents = viewModel.getContent(),
+        whatgorismContents = viewModel.getWhatgorisms(),
+        upcomingContents = viewModel.getUpcoming(),
+        partyContents = viewModel.getWatchaParties(),
         modifier = modifier
     )
 }
