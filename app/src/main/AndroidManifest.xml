@@ -12,32 +12,42 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LETSSOPT">
         <activity
-            android:name=".ui.StorageActivity"
-            android:exported="false"
-            android:label="@string/title_activity_storage"
-            android:theme="@style/Theme.LETSSOPT" />
-        <activity
-            android:name=".ui.SearchActivity"
-            android:exported="false"
-            android:label="@string/title_activity_search"
-            android:theme="@style/Theme.LETSSOPT" />
-        <activity
-            android:name=".ui.WebtoonActivity"
-            android:exported="false"
-            android:label="@string/title_activity_webtoon"
-            android:theme="@style/Theme.LETSSOPT" />
-        <activity
-            android:name=".ui.PurchaseActivity"
-            android:exported="false"
-            android:label="@string/title_activity_purchase"
-            android:theme="@style/Theme.LETSSOPT" />
-        <activity
-            android:name=".ui.HomeActivity"
+            android:name=".presentation.home.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.LETSSOPT" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentation.home.component.HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.StorageActivity"
+            android:exported="false"
+            android:label="@string/title_activity_storage"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.SearchActivity"
+            android:exported="false"
+            android:label="@string/title_activity_search"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.WebtoonActivity"
+            android:exported="false"
+            android:label="@string/title_activity_webtoon"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.PurchaseActivity"
+            android:exported="false"
+            android:label="@string/title_activity_purchase"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.login.LoginActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -47,10 +57,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NextActivity"
+            android:name=".presentation.signup.NextActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".presentation.MainActivity2"
             android:exported="true" />
     </application>
 

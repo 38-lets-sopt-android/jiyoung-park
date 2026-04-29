@@ -1,12 +1,15 @@
-package com.example.letssopt
+package com.example.letssopt.presentation.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,19 +39,44 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.letssopt.R
+import com.example.letssopt.presentation.signup.NextActivity
+import com.example.letssopt.presentation.main.MainActivity
 import com.example.letssopt.ui.theme.LETSSOPTTheme
 
-class NextActivity : ComponentActivity() {
+class LoginActivity : ComponentActivity() {
+    private var registeredEmail by mutableStateOf("")
+    private var registeredPassword by mutableStateOf("")
+    private val registerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            registeredEmail = result.data?.getStringExtra("email") ?: ""
+            registeredPassword = result.data?.getStringExtra("password") ?: ""
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pref = getSharedPreferences("auth", MODE_PRIVATE)
+        if (pref.getBoolean("isLoggedIn", false)) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
+
         setContent {
             LETSSOPTTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     containerColor = Color.Black
                 ) { innerPadding ->
-                    SignUpScreen(
-                        modifier = Modifier.padding(innerPadding)
+                    LoginScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        launcher = registerLauncher,
+                        registeredEmail = registeredEmail,
+                        registeredPassword = registeredPassword,
                     )
                 }
             }
@@ -57,13 +85,18 @@ class NextActivity : ComponentActivity() {
 }
 
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    launcher: ActivityResultLauncher<Intent>? = null,
+    registeredEmail: String = "",
+    registeredPassword: String = ""
+) {
 
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordCheck by remember { mutableStateOf("") }
-    val allFilled = email.isNotBlank() && password.isNotBlank() && passwordCheck.isNotBlank()
+    val allFilled = email.isNotBlank() && password.isNotBlank()
+
 
     Column(
         modifier = modifier
@@ -75,8 +108,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         Text(
             text = "watcha",
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             color = Color(0xFFE8003C),
             fontSize = 36.sp,
             fontFamily = FontFamily(Font(R.font.pretendard_bold)),
@@ -87,7 +119,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(26.dp))
 
         Text(
-            text = "회원가입",
+            text = "이메일로 로그인",
             modifier = Modifier.fillMaxWidth(),
             color = Color.White,
             fontSize = 20.sp,
@@ -124,6 +156,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 },
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
+                    disabledTextColor = Color(0xFF666666),
                     unfocusedTextColor = Color(0xFFFFFFFF),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
@@ -164,46 +197,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 visualTransformation = PasswordVisualTransformation(mask = '*'),
                 shape = RoundedCornerShape(size = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    unfocusedTextColor = Color(0xFFFFFFFF),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedContainerColor = Color(0xFF2A2A2A),
-                    focusedContainerColor = Color(0xFF2A2A2A),
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                )
-            )
-        }
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "비밀번호 확인",
-                modifier = Modifier.fillMaxWidth(),
-                color = Color(0xFF999999),
-                fontSize = 14.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight.Medium
-            )
-            TextField(
-                value = passwordCheck,
-                onValueChange = { passwordCheck = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = "비밀번호를 다시 입력하세요",
-                        modifier = Modifier.fillMaxWidth(),
-                        color = Color(0xFF666666),
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                        fontWeight = FontWeight.Medium
-                    )
-                },
-                visualTransformation = PasswordVisualTransformation(mask = '*'),
-                shape = RoundedCornerShape(size = 8.dp),
-                colors = TextFieldDefaults.colors(
+                    disabledTextColor = Color(0xFF666666),
                     unfocusedTextColor = Color(0xFFFFFFFF),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedContainerColor = Color(0xFF2A2A2A),
@@ -216,29 +210,34 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.weight(1f))
 
+        Text(
+            text = "아직 계정이 없으신가요?  회원가입",
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable() {
+                    val intent = Intent(context, NextActivity::class.java)
+                    launcher?.launch(intent)
+                },
+            color = Color(0xFF999999),
+            fontSize = 14.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_regular)),
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         Button(
             onClick = {
-                when {
-                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
-                        Toast.makeText(context, "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                if (email == registeredEmail && password == registeredPassword) {
+                    val pref = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                    pref.edit().putBoolean("isLoggedIn", true).apply()
 
-                    password.length !in 8..12 ->
-                        Toast.makeText(context, "비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
-
-                    password != passwordCheck ->
-                        Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-
-                    else -> {
-                        Toast.makeText(context, "회원가입 성공!", Toast.LENGTH_SHORT).show()
-
-                        val activity = context as NextActivity
-                        val resultIntent = Intent().apply {
-                            putExtra("email", email)
-                            putExtra("password", password)
-                        }
-                        activity.setResult(android.app.Activity.RESULT_OK, resultIntent)
-                        activity.finish()
-                    }
+                    Toast.makeText(context, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+                } else {
+                    Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier
@@ -254,7 +253,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             )
         ) {
             Text(
-                text = "회원가입",
+                text = "로그인",
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_bold)),
                 fontWeight = FontWeight.Bold
@@ -268,8 +267,8 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-private fun SignUpScreenPreview() {
+private fun LoginScreenPreview() {
     LETSSOPTTheme {
-        SignUpScreen()
+        LoginScreen()
     }
 }
