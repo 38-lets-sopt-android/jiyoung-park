@@ -36,6 +36,9 @@ class MainNavigator(
 
     @Composable
     fun shouldShowBottomBar() = currentTab != null
+
+    @Composable
+    fun shouldShowTopBar() = currentTab != null
 }
 
 @Composable

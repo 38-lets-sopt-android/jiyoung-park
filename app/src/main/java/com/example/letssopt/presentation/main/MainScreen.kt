@@ -5,6 +5,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.letssopt.core.navigation.Route
+import com.example.letssopt.presentation.home.component.HomeTopBar
 import com.example.letssopt.presentation.main.component.MainBottomBar
 import com.example.letssopt.presentation.main.navigation.MainNavHost
 import com.example.letssopt.presentation.main.navigation.MainNavigator
@@ -17,6 +18,13 @@ fun MainScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
+
+        topBar = {
+            if (navigator.shouldShowTopBar()) {
+                HomeTopBar()
+            }
+        },
+
         bottomBar = {
             MainBottomBar(
                 visible = navigator.shouldShowBottomBar(),
