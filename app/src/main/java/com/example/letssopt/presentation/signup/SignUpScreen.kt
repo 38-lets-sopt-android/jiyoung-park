@@ -31,7 +31,7 @@ import com.example.letssopt.core.commom.extension.toast
 import com.example.letssopt.core.commom.util.HandleUiEffects
 
 @Composable
-fun RegisterRoute(
+fun SignUpRoute(
     popBackStack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = viewModel(),
