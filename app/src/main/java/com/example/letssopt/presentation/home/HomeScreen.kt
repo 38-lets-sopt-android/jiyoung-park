@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.presentation.home.component.NewContentSection
 import com.example.letssopt.presentation.home.component.PartySection
 import com.example.letssopt.presentation.home.component.UpcomimgSection
@@ -17,8 +18,8 @@ import com.example.letssopt.presentation.home.component.WhatgorismSection
 
 @Composable
 fun HomeRoute(
-    viewModel: HomeViewModel,
     modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(),
 ){
     HomeScreen(
         newContents = viewModel.getContent(),
