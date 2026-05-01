@@ -31,7 +31,8 @@ import com.example.letssopt.ui.theme.LETSSOPTTheme
 
 @Composable
 fun MainBottomBar(
-    currentTab: MainTab,
+    visible: Boolean,
+    currentTab: MainTab?,
     onClick: (MainTab)->Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -101,6 +102,7 @@ private fun MainBottomBarPreview(
 ) {
     LETSSOPTTheme {
         MainBottomBar(
+            visible = true,
             currentTab = currentTab,
             onClick = {},
         )

@@ -11,13 +11,13 @@ import kotlinx.serialization.Serializable
 
 sealed interface CollectionRoute : Route {
     @Serializable
-    data object Archive : CollectionRoute
+    data object Collection : CollectionRoute
 }
 
-fun NavGraphBuilder.archiveNavGraph(
+fun NavGraphBuilder.CollectionNavGraph(
     paddingValues: PaddingValues,
 ) {
-    composable<CollectionRoute.Archive> {
+    composable<CollectionRoute.Collection> {
         CollectionRoute(
             modifier = Modifier.padding(paddingValues)
         )
