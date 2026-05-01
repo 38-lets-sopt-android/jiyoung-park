@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.example.letssopt.core.navigation.Route
+import com.example.letssopt.presentation.auth.navigation.authNavGraph
 import com.example.letssopt.presentation.collection.navigation.CollectionNavGraph
 import com.example.letssopt.presentation.home.navigation.homeNavGraph
 import com.example.letssopt.presentation.purchase.navigation.purchaseNavGraph
@@ -31,6 +32,10 @@ fun MainNavHost(
         popEnterTransition = { fadeIn(tween(160)) },
         popExitTransition = { fadeOut(tween(160)) },
     ) {
+        authNavGraph(
+            navController = navigator.navController,
+            paddingValues = paddingValues,
+        )
         homeNavGraph(
             paddingValues = paddingValues,
         )

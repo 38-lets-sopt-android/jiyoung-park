@@ -220,6 +220,8 @@ private fun LoginScreen(
 
         }
 
+        Spacer(modifier = Modifier.height(26.dp))
+
     }
 
 }

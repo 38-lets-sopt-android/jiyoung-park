@@ -242,6 +242,8 @@ private fun SignUpScreen(
 
         }
 
+        Spacer(modifier = Modifier.height(26.dp))
+
     }
 
 }
