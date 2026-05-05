@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 private enum class RegisterValidationError(@param:StringRes val message: Int) {
-    EMAIL_INVALID(R.string.register_msg_fail_emailinvalid),
-    PASSWORD_INVALID_LENGTH(R.string.register_msg_fail_passwordlength),
-    PASSWORD_MISMATCH(R.string.register_msg_fail_passwordmismatch)
+    EMAIL_INVALID(R.string.signup_msg_fail_emailinvalid),
+    PASSWORD_INVALID_LENGTH(R.string.signup_msg_fail_passwordlength),
+    PASSWORD_MISMATCH(R.string.signup_msg_fail_passwordmismatch)
 }
 
 
@@ -58,11 +58,11 @@ class SignUpViewModel : ViewModel() {
     ) {
         AuthRepository.register(emailText, passwordText)
             .onSuccess {
-                sendEffect(SignUpUiEffect.ShowToast(R.string.register_msg_success))
+                sendEffect(SignUpUiEffect.ShowToast(R.string.signup_msg_success))
                 sendEffect(SignUpUiEffect.BackToLogin)
             }
             .onFailure {
-                sendEffect(SignUpUiEffect.ShowToast(R.string.register_msg_fail))
+                sendEffect(SignUpUiEffect.ShowToast(R.string.signup_msg_fail))
             }
     }
 
