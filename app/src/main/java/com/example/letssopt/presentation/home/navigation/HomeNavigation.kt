@@ -10,13 +10,13 @@ import com.example.letssopt.core.navigation.Route
 import com.example.letssopt.presentation.home.HomeRoute
 import kotlinx.serialization.Serializable
 
-sealed interface HomeDestination : Route {
+sealed interface HomeRoute : Route {
     @Serializable
-    data object Home : HomeDestination
+    data object Home : HomeRoute
 }
 
 fun NavController.navigateToHome() {
-    navigate(HomeDestination.Home) {
+    navigate(HomeRoute.Home) {
         popUpTo(0) {
             inclusive = true
         }
@@ -27,7 +27,7 @@ fun NavController.navigateToHome() {
 fun NavGraphBuilder.homeNavGraph(
     paddingValues: PaddingValues,
 ) {
-    composable<HomeDestination.Home> {
+    composable<HomeRoute.Home> {
         HomeRoute(
             modifier = Modifier.padding(paddingValues)
         )

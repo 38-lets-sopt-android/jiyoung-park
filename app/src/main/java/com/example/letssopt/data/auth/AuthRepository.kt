@@ -46,8 +46,4 @@ object AuthRepository {
     private fun saveLoggedInState() {
         prefs.edit().putBoolean(PREFS_IS_LOGGED_IN_KEY, true).apply()
     }
-
-    fun logout() {
-        prefs.edit().putBoolean(PREFS_IS_LOGGED_IN_KEY, false).apply()
-    }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.letssopt.core.navigation.Route
 import com.example.letssopt.data.auth.AuthRepository
 import com.example.letssopt.presentation.auth.navigation.AuthGraph
-import com.example.letssopt.presentation.home.navigation.HomeDestination
+import com.example.letssopt.presentation.home.navigation.HomeRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -15,7 +15,7 @@ class MainViewModel : ViewModel() {
 
     init {
         val dest = when (AuthRepository.isLoggedIn()) {
-            true -> HomeDestination.Home
+            true -> HomeRoute.Home
             false -> AuthGraph
         }
         _startDestination.update { dest }

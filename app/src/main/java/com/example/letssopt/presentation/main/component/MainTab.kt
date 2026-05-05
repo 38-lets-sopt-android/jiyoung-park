@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import com.example.letssopt.R
 import com.example.letssopt.core.navigation.Route
 import com.example.letssopt.presentation.collection.navigation.CollectionRoute
-import com.example.letssopt.presentation.home.navigation.HomeDestination
+import com.example.letssopt.presentation.home.navigation.HomeRoute
 import com.example.letssopt.presentation.purchase.navigation.PurchaseRoute
 import com.example.letssopt.presentation.search.navigation.SearchRoute
 import com.example.letssopt.presentation.webtoon.navigation.WebtoonRoute
@@ -18,7 +18,7 @@ enum class MainTab(
     HOME(
         iconRes = R.drawable.ic_bottom_bar_main_24,
         labelRes = R.string.bottom_main,
-        route = HomeDestination.Home,
+        route = HomeRoute.Home,
     ),
     PURCHASE(
         iconRes = R.drawable.ic_bottom_bar_category_24,

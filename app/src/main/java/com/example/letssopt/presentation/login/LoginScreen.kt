@@ -33,7 +33,7 @@ import com.example.letssopt.core.commom.util.HandleUiEffects
 
 @Composable
 fun LoginRoute(
-    navigateToRegister: ()->Unit,
+    navigateToRegister: () -> Unit,
     navigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = viewModel(),

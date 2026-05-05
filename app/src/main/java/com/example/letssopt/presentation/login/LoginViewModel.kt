@@ -43,7 +43,7 @@ class LoginViewModel : ViewModel() {
         passwordText: String,
     ) {
         AuthRepository.login(emailText, passwordText)
-            .onSuccess {_: Unit ->
+            .onSuccess {
                 sendEffect(LoginUiEffect.ShowToast(R.string.login_msg_success))
                 sendEffect(LoginUiEffect.NavigateToMain)
             }
