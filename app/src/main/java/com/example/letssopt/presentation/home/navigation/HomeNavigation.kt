@@ -29,7 +29,7 @@ fun NavGraphBuilder.homeNavGraph(
 ) {
     composable<HomeRoute.Home> {
         HomeRoute(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
         )
     }
 }
