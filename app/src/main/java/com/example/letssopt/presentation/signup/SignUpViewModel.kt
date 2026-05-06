@@ -2,16 +2,20 @@ package com.example.letssopt.presentation.signup
 
 import android.util.Patterns
 import androidx.annotation.StringRes
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.letssopt.R
 import com.example.letssopt.data.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 private enum class RegisterValidationError(@param:StringRes val message: Int) {
@@ -22,6 +26,21 @@ private enum class RegisterValidationError(@param:StringRes val message: Int) {
 
 
 class SignUpViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(SignUpUiState())
+    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
+
+    fun onEmailChanged(value: String) {
+        _uiState.update { it.copy(email = value) }
+    }
+
+    fun onPasswordChanged(value: String) {
+        _uiState.update { it.copy(password = value) }
+    }
+
+    fun onPasswordComfirmChanged(value: String) {
+        _uiState.update { it.copy(passwordConfirm = value) }
+    }
+
     private val _uiEffect = MutableSharedFlow<SignUpUiEffect>()
     val uiEffect: SharedFlow<SignUpUiEffect> = _uiEffect.asSharedFlow()
 
@@ -31,18 +50,18 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    val emailState = TextFieldState()
-    val passwordState = TextFieldState()
-    val passwordConfirmState = TextFieldState()
-
-    val registerEnabled by derivedStateOf {
-        emailState.text.isNotBlank() && passwordState.text.isNotBlank() && passwordConfirmState.text.isNotBlank()
-    }
+    val registerEnabled: StateFlow<Boolean> = uiState
+        .map { it.email.isNotBlank() && it.password.isNotBlank() && it.passwordConfirm.isNotBlank() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
 
     fun onSignUpClick() {
-        val emailText = emailState.text.toString()
-        val passwordText = passwordState.text.toString()
-        val passwordConfirmText = passwordConfirmState.text.toString()
+        val emailText = uiState.value.email
+        val passwordText = uiState.value.password
+        val passwordConfirmText = uiState.value.passwordConfirm
 
         val error = validateRegisterInputs(emailText, passwordText, passwordConfirmText)
         if (error != null) {

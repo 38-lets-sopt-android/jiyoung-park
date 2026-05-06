@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -37,6 +38,8 @@ fun SignUpRoute(
     viewModel: SignUpViewModel = viewModel(),
 ) {
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsState()
+    val registerEnabled by viewModel.registerEnabled.collectAsState()
 
     HandleUiEffects(viewModel.uiEffect) { effect ->
         when (effect) {
@@ -47,10 +50,9 @@ fun SignUpRoute(
     }
 
     SignUpScreen(
-        emailState = viewModel.emailState,
-        passwordState = viewModel.passwordState,
-        passwordConfirmState = viewModel.passwordConfirmState,
-        registerEnabled = viewModel.registerEnabled,
+        viewModel = viewModel,
+        uiState = uiState,
+        registerEnabled = registerEnabled,
         onRegisterClick = viewModel::onSignUpClick,
         modifier = modifier,
     )
@@ -58,9 +60,8 @@ fun SignUpRoute(
 
 @Composable
 private fun SignUpScreen(
-    emailState: TextFieldState,
-    passwordState: TextFieldState,
-    passwordConfirmState: TextFieldState,
+    viewModel: SignUpViewModel,
+    uiState: SignUpUiState,
     registerEnabled: Boolean,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -109,10 +110,8 @@ private fun SignUpScreen(
                 fontWeight = FontWeight.Medium,
             )
             TextField(
-                value = emailState.text.toString(),
-                onValueChange = {
-                    emailState.edit { replace(0, length, it) }
-                },
+                value = uiState.email,
+                onValueChange = viewModel::onEmailChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
@@ -149,10 +148,8 @@ private fun SignUpScreen(
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = passwordState.text.toString(),
-                onValueChange = {
-                    passwordState.edit { replace(0, length, it) }
-                },
+                value = uiState.password,
+                onValueChange = viewModel::onPasswordChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
@@ -190,10 +187,8 @@ private fun SignUpScreen(
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = passwordConfirmState.text.toString(),
-                onValueChange = {
-                    passwordConfirmState.edit { replace(0, length, it) }
-                },
+                value = uiState.passwordConfirm,
+                onValueChange = viewModel::onPasswordComfirmChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(

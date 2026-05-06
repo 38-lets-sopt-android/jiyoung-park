@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.R
 import com.example.letssopt.core.commom.extension.toast
@@ -39,6 +40,8 @@ fun LoginRoute(
     viewModel: LoginViewModel = viewModel(),
 ) {
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val loginEnabled by viewModel.loginEnabled.collectAsStateWithLifecycle()
 
     HandleUiEffects(viewModel.uiEffect) { effect ->
         when (effect) {
@@ -51,9 +54,9 @@ fun LoginRoute(
     }
 
     LoginScreen(
-        emailState = viewModel.emailState,
-        passwordState = viewModel.passwordState,
-        loginEnabled = viewModel.loginEnabled,
+        viewModel = viewModel,
+        uiState = uiState,
+        loginEnabled = loginEnabled,
         onLoginClick = viewModel::onLoginClick,
         onRegisterClick = viewModel::onRegisterClick,
         modifier = modifier,
@@ -62,8 +65,8 @@ fun LoginRoute(
 
 @Composable
 private fun LoginScreen(
-    emailState: TextFieldState,
-    passwordState: TextFieldState,
+    viewModel: LoginViewModel,
+    uiState: LoginUiState,
     loginEnabled: Boolean,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
@@ -112,10 +115,8 @@ private fun LoginScreen(
                 fontWeight = FontWeight.Medium,
             )
             TextField(
-                value = emailState.text.toString(),
-                onValueChange = {
-                    emailState.edit { replace(0, length, it) }
-                },
+                value = uiState.email,
+                onValueChange = viewModel::onEmailChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
@@ -153,10 +154,8 @@ private fun LoginScreen(
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = passwordState.text.toString(),
-                onValueChange = {
-                    passwordState.edit { replace(0, length, it) }
-                },
+                value = uiState.password,
+                onValueChange = viewModel::onPasswordChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(

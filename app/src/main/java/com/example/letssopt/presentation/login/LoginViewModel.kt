@@ -1,20 +1,33 @@
 package com.example.letssopt.presentation.login
 
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.letssopt.R
 import com.example.letssopt.data.auth.AuthException
 import com.example.letssopt.data.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+
+    fun onEmailChanged(value: String) {
+        _uiState.update { it.copy(email = value) }
+    }
+
+    fun onPasswordChanged(value: String) {
+        _uiState.update { it.copy(password = value) }
+    }
     private val _uiEffect = MutableSharedFlow<LoginUiEffect>()
     val uiEffect: SharedFlow<LoginUiEffect> = _uiEffect.asSharedFlow()
 
@@ -24,16 +37,18 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    // 이메일, 비밀번호 입력 상태
-    val emailState = TextFieldState()
-    val passwordState = TextFieldState()
-
     // 모두 입력됐을 때만 true -> 로그인 버튼 활성화
-    val loginEnabled by derivedStateOf { emailState.text.isNotBlank() && passwordState.text.isNotBlank() }
+    val loginEnabled: StateFlow<Boolean> = uiState
+        .map { it.email.isNotBlank() && it.password.isNotBlank() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
 
     fun onLoginClick() {
-        val emailText = emailState.text.toString()
-        val passwordText = passwordState.text.toString()
+        val emailText = uiState.value.email
+        val passwordText = uiState.value.password
 
         handleLogin(emailText, passwordText)
     }
@@ -61,8 +76,7 @@ class LoginViewModel : ViewModel() {
 
     // 회원가입 텍스트 클릭
     fun onRegisterClick() {
-        emailState.clearText()
-        passwordState.clearText()
+        _uiState.update { it.copy(email = "", password = "") }
         sendEffect(LoginUiEffect.NavigateToRegister)
     }
 }
