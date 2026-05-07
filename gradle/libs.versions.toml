@@ -8,6 +8,13 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.12.3"
 composeBom = "2024.09.00"
+# --- Coil ---
+coilCompose = "2.7.0"
+# --- Navigation ---
+androidxComposeNavigation = "2.8.9"
+kotlinxSerializationJson = "1.8.1"
+# --- View Model ---
+viewModelCompose = "2.10.0"
 appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.13.0"
@@ -36,9 +43,17 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+# --- Coil ---
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+# --- Navigation ---
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+# --- View Model ---
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle" , name  = "lifecycle-viewmodel-compose", version.ref = "viewModelCompose"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

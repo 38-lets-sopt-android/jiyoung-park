@@ -6,10 +6,35 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_storage">StorageActivity</string>
 
+    <!--  Preference Key  -->
+    <string name="shared_preference_file_key" translatable="false">shared preference file key</string>
+
+    <!--  Bottom Bar  -->
     <string name="bottom_main">메인</string>
     <string name="bottom_purchase">개별 구매</string>
     <string name="bottom_webtoon">웹툰</string>
     <string name="bottom_search">찾기</string>
     <string name="bottom_collection">보관함</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <!--  Login  -->
+    <string name="login_btn">로그인</string>
+    <string name="login_title">이메일로 로그인</string>
+    <string name="login_btn_register">아직 계정이 없으신가요?  회원가입</string>
+    <string name="login_msg_success">로그인에 성공했습니다</string>
+    <string name="login_msg_fail_emailnotfound">존재하지 않는 이메일입니다</string>
+    <string name="login_msg_fail_needregister">회원가입을 먼저 수행해주세요</string>
+    <string name="login_msg_fail_passwordmismatch">비밀번호가 올바르지 않습니다</string>
+    <string name="login_msg_fail">로그인에 실패했습니다</string>
+
+    <!-- SignUp -->
+    <string name="signup_btn">회원가입</string>
+    <string name="signup_title">회원가입</string>
+    <string name="signup_placeholder_passwordconfirm">비밀번호를 다시 입력하세요</string>
+    <string name="signup_label_passwordconfirm">비밀번호 확인</string>
+    <string name="signup_msg_success">회원가입에 성공했습니다</string>
+    <string name="signup_msg_fail">회원가입에 실패했습니다</string>
+    <string name="signup_msg_fail_emailinvalid">올바른 이메일 형식을 입력해주세요</string>
+    <string name="signup_msg_fail_passwordlength">비밀번호는 8~12자로 입력해주세요</string>
+    <string name="signup_msg_fail_passwordmismatch">비밀번호가 일치하지 않습니다</string>
 </resources>

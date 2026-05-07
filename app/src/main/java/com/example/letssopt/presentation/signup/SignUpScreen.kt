@@ -1,12 +1,5 @@
 package com.example.letssopt.presentation.signup
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
-import android.util.Patterns
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,15 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -34,39 +23,53 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.R
-import com.example.letssopt.ui.theme.LETSSOPTTheme
+import com.example.letssopt.core.commom.extension.toast
+import com.example.letssopt.core.commom.util.HandleUiEffects
 
-class NextActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            LETSSOPTTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = Color.Black
-                ) { innerPadding ->
-                    SignUpScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+@Composable
+fun SignUpRoute(
+    popBackStack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = viewModel(),
+) {
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val registerEnabled by viewModel.registerEnabled.collectAsStateWithLifecycle()
+
+    HandleUiEffects(viewModel.uiEffect) { effect ->
+        when (effect) {
+            SignUpUiEffect.BackToLogin -> popBackStack()
+
+            is SignUpUiEffect.ShowToast -> context.toast(effect.message)
         }
     }
+
+    SignUpScreen(
+        uiState = uiState,
+        registerEnabled = registerEnabled,
+        onRegisterClick = viewModel::onSignUpClick,
+        onEmailChanged = viewModel::onEmailChanged,
+        onPasswordChanged = viewModel::onPasswordChanged,
+        onPasswordConfirmChanged = viewModel::onPasswordConfirmChanged,
+        modifier = modifier,
+    )
 }
 
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier) {
-
-    val context = LocalContext.current
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordCheck by remember { mutableStateOf("") }
-    val allFilled = email.isNotBlank() && password.isNotBlank() && passwordCheck.isNotBlank()
-
+private fun SignUpScreen(
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onPasswordConfirmChanged: (String) -> Unit,
+    uiState: SignUpUiState,
+    registerEnabled: Boolean,
+    onRegisterClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -111,13 +114,12 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium,
             )
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = uiState.email,
+                onValueChange = onEmailChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "이메일 주소를 입력하세요",
-                        modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFF666666),
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -150,13 +152,12 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = password,
-                onValueChange = { password = it },
+                value = uiState.password,
+                onValueChange = onPasswordChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "비밀번호를 입력하세요",
-                        modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFF666666),
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -190,13 +191,12 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = passwordCheck,
-                onValueChange = { passwordCheck = it },
+                value = uiState.passwordConfirm,
+                onValueChange = onPasswordConfirmChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "비밀번호를 다시 입력하세요",
-                        modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFF666666),
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -219,34 +219,11 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = {
-                when {
-                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
-                        Toast.makeText(context, "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
-
-                    password.length !in 8..12 ->
-                        Toast.makeText(context, "비밀번호는 8~12자여야 합니다.", Toast.LENGTH_SHORT).show()
-
-                    password != passwordCheck ->
-                        Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-
-                    else -> {
-                        Toast.makeText(context, "회원가입 성공!", Toast.LENGTH_SHORT).show()
-
-                        val activity = context as NextActivity
-                        val resultIntent = Intent().apply {
-                            putExtra("email", email)
-                            putExtra("password", password)
-                        }
-                        activity.setResult(Activity.RESULT_OK, resultIntent)
-                        activity.finish()
-                    }
-                }
-            },
+            onClick = onRegisterClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
-            enabled = allFilled,
+            enabled = registerEnabled,
             shape = RoundedCornerShape(size = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color(0xFFFFFFFF),
@@ -264,14 +241,8 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
 
         }
 
+        Spacer(modifier = Modifier.height(26.dp))
+
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SignUpScreenPreview() {
-    LETSSOPTTheme {
-        SignUpScreen()
-    }
 }

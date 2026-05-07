@@ -1,13 +1,5 @@
 package com.example.letssopt.presentation.login
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,15 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -36,71 +24,56 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.R
-import com.example.letssopt.presentation.main.MainActivity
-import com.example.letssopt.presentation.signup.NextActivity
-import com.example.letssopt.ui.theme.LETSSOPTTheme
+import com.example.letssopt.core.commom.extension.toast
+import com.example.letssopt.core.commom.util.HandleUiEffects
 
-class LoginActivity : ComponentActivity() {
-    private var registeredEmail by mutableStateOf("")
-    private var registeredPassword by mutableStateOf("")
-    private val registerLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            registeredEmail = result.data?.getStringExtra("email") ?: ""
-            registeredPassword = result.data?.getStringExtra("password") ?: ""
+@Composable
+fun LoginRoute(
+    navigateToRegister: () -> Unit,
+    navigateToMain: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = viewModel(),
+) {
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val loginEnabled by viewModel.loginEnabled.collectAsStateWithLifecycle()
+
+    HandleUiEffects(viewModel.uiEffect) { effect ->
+        when (effect) {
+            LoginUiEffect.NavigateToRegister -> navigateToRegister()
+
+            LoginUiEffect.NavigateToMain -> navigateToMain()
+
+            is LoginUiEffect.ShowToast -> context.toast(effect.message)
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val PREFERENCES_NAME = "auth"
-        val IS_LOGGED_IN = "isLoggedIn"
-
-        val pref = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
-        if (pref.getBoolean(IS_LOGGED_IN, false)) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-            return
-        }
-
-        setContent {
-            LETSSOPTTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = Color.Black
-                ) { innerPadding ->
-                    LoginScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        launcher = registerLauncher,
-                        registeredEmail = registeredEmail,
-                        registeredPassword = registeredPassword,
-                    )
-                }
-            }
-        }
-    }
+    LoginScreen(
+        uiState = uiState,
+        loginEnabled = loginEnabled,
+        onLoginClick = viewModel::onLoginClick,
+        onRegisterClick = viewModel::onRegisterClick,
+        onEmailChanged = viewModel::onEmailChanged,
+        onPasswordChanged = viewModel::onPasswordChanged,
+        modifier = modifier,
+    )
 }
 
 @Composable
-fun LoginScreen(
+private fun LoginScreen(
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    uiState: LoginUiState,
+    loginEnabled: Boolean,
+    onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier,
-    launcher: ActivityResultLauncher<Intent>? = null,
-    registeredEmail: String = "",
-    registeredPassword: String = ""
 ) {
-
-    val context = LocalContext.current
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    val allFilled = email.isNotBlank() && password.isNotBlank()
-
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -144,13 +117,12 @@ fun LoginScreen(
                 fontWeight = FontWeight.Medium,
             )
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = uiState.email,
+                onValueChange = onEmailChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "이메일 주소를 입력하세요",
-                        modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFF666666),
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -184,13 +156,12 @@ fun LoginScreen(
                 fontWeight = FontWeight.Medium
             )
             TextField(
-                value = password,
-                onValueChange = { password = it },
+                value = uiState.password,
+                onValueChange = onPasswordChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "비밀번호를 입력하세요",
-                        modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFF666666),
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -217,10 +188,7 @@ fun LoginScreen(
             text = "아직 계정이 없으신가요?  회원가입",
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable() {
-                    val intent = Intent(context, NextActivity::class.java)
-                    launcher?.launch(intent)
-                },
+                .clickable { onRegisterClick() },
             color = Color(0xFF999999),
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.pretendard_regular)),
@@ -231,22 +199,11 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = {
-                if (email == registeredEmail && password == registeredPassword) {
-                    val pref = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-                    pref.edit().putBoolean("isLoggedIn", true).apply()
-
-                    Toast.makeText(context, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(context, MainActivity::class.java)
-                    context.startActivity(intent)
-                } else {
-                    Toast.makeText(context, "이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
-            },
+            onClick = onLoginClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
-            enabled = allFilled,
+            enabled = loginEnabled,
             shape = RoundedCornerShape(size = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color(0xFFFFFFFF),
@@ -264,14 +221,8 @@ fun LoginScreen(
 
         }
 
+        Spacer(modifier = Modifier.height(26.dp))
+
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun LoginScreenPreview() {
-    LETSSOPTTheme {
-        LoginScreen()
-    }
 }
