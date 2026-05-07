@@ -54,18 +54,20 @@ fun LoginRoute(
     }
 
     LoginScreen(
-        viewModel = viewModel,
         uiState = uiState,
         loginEnabled = loginEnabled,
         onLoginClick = viewModel::onLoginClick,
         onRegisterClick = viewModel::onRegisterClick,
+        onEmailChanged = viewModel::onEmailChanged,
+        onPasswordChanged = viewModel::onPasswordChanged,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun LoginScreen(
-    viewModel: LoginViewModel,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
     uiState: LoginUiState,
     loginEnabled: Boolean,
     onLoginClick: () -> Unit,
@@ -116,7 +118,7 @@ private fun LoginScreen(
             )
             TextField(
                 value = uiState.email,
-                onValueChange = viewModel::onEmailChanged,
+                onValueChange = onEmailChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
@@ -155,7 +157,7 @@ private fun LoginScreen(
             )
             TextField(
                 value = uiState.password,
-                onValueChange = viewModel::onPasswordChanged,
+                onValueChange = onPasswordChanged,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(

@@ -37,7 +37,7 @@ class SignUpViewModel : ViewModel() {
         _uiState.update { it.copy(password = value) }
     }
 
-    fun onPasswordComfirmChanged(value: String) {
+    fun onPasswordConfirmChanged(value: String) {
         _uiState.update { it.copy(passwordConfirm = value) }
     }
 
