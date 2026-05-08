@@ -96,7 +96,7 @@ private fun LoginScreen(
         Spacer(modifier = Modifier.height(26.dp))
 
         Text(
-            text = "이메일로 로그인",
+            text = "아이디로 로그인",
             modifier = Modifier.fillMaxWidth(),
             color = Color.White,
             fontSize = 20.sp,
