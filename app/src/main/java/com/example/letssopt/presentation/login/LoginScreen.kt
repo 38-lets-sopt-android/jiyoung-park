@@ -9,11 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,7 +21,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.R
 import com.example.letssopt.core.commom.extension.toast
 import com.example.letssopt.core.commom.util.HandleUiEffects
+import com.example.letssopt.core.designsystem.component.LetsLabeledTextField
 
 @Composable
 fun LoginRoute(
@@ -58,7 +59,7 @@ fun LoginRoute(
         loginEnabled = loginEnabled,
         onLoginClick = viewModel::onLoginClick,
         onRegisterClick = viewModel::onRegisterClick,
-        onEmailChanged = viewModel::onEmailChanged,
+        onIdChanged = viewModel::onIdChanged,
         onPasswordChanged = viewModel::onPasswordChanged,
         modifier = modifier,
     )
@@ -66,9 +67,9 @@ fun LoginRoute(
 
 @Composable
 private fun LoginScreen(
-    onEmailChanged: (String) -> Unit,
+    onIdChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
-    uiState: LoginUiState,
+    uiState: LoginFormState,
     loginEnabled: Boolean,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
@@ -95,7 +96,7 @@ private fun LoginScreen(
         Spacer(modifier = Modifier.height(26.dp))
 
         Text(
-            text = "이메일로 로그인",
+            text = "아이디로 로그인",
             modifier = Modifier.fillMaxWidth(),
             color = Color.White,
             fontSize = 20.sp,
@@ -105,82 +106,30 @@ private fun LoginScreen(
 
         Spacer(modifier = Modifier.height(36.dp))
 
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "이메일",
-                modifier = Modifier.fillMaxWidth(),
-                color = Color(0xFF999999),
-                fontSize = 14.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight.Medium,
-            )
-            TextField(
-                value = uiState.email,
-                onValueChange = onEmailChanged,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = "이메일 주소를 입력하세요",
-                        color = Color(0xFF666666),
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                        fontWeight = FontWeight.Medium
-                    )
-                },
-                shape = RoundedCornerShape(size = 8.dp),
-                colors = TextFieldDefaults.colors(
-                    disabledTextColor = Color(0xFF666666),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedContainerColor = Color(0xFF2A2A2A),
-                    focusedContainerColor = Color(0xFF2A2A2A),
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                )
-            )
-        }
+        LetsLabeledTextField(
+            value = uiState.loginId,
+            onValueChange = onIdChanged,
+            label = "아이디",
+            placeholder = "아이디를 입력하세요",
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next,
+            ),
+        )
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "비밀번호",
-                modifier = Modifier.fillMaxWidth(),
-                color = Color(0xFF999999),
-                fontSize = 14.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                fontWeight = FontWeight.Medium
-            )
-            TextField(
-                value = uiState.password,
-                onValueChange = onPasswordChanged,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = "비밀번호를 입력하세요",
-                        color = Color(0xFF666666),
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_regular)),
-                        fontWeight = FontWeight.Medium
-                    )
-                },
-                visualTransformation = PasswordVisualTransformation(mask = '*'),
-                shape = RoundedCornerShape(size = 8.dp),
-                colors = TextFieldDefaults.colors(
-                    disabledTextColor = Color(0xFF666666),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedContainerColor = Color(0xFF2A2A2A),
-                    focusedContainerColor = Color(0xFF2A2A2A),
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                )
-            )
-        }
+        LetsLabeledTextField(
+            value = uiState.password,
+            onValueChange = onPasswordChanged,
+            label = "비밀번호",
+            placeholder = "비밀번호를 입력하세요",
+            isPassword = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next,
+            ),
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 

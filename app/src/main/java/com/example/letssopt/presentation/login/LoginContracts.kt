@@ -3,8 +3,8 @@ package com.example.letssopt.presentation.login
 import androidx.annotation.StringRes
 import com.example.letssopt.core.base.UiEffect
 
-data class LoginUiState(
-    val email: String = "",
+data class LoginFormState(
+    val loginId: String = "",
     val password: String = "",
 )
 
