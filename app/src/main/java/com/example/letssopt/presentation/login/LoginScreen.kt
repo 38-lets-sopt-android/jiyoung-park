@@ -69,7 +69,7 @@ fun LoginRoute(
 private fun LoginScreen(
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
-    uiState: LoginUiState,
+    uiState: LoginFormState,
     loginEnabled: Boolean,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,

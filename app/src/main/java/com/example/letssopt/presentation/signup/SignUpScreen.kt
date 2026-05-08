@@ -66,7 +66,7 @@ private fun SignUpScreen(
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onPasswordConfirmChanged: (String) -> Unit,
-    uiState: SignUpUiState,
+    uiState: SignUpFormState,
     registerEnabled: Boolean,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier,

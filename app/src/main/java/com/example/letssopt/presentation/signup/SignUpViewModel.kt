@@ -26,8 +26,8 @@ private enum class RegisterValidationError(@param:StringRes val message: Int) {
 
 
 class SignUpViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(SignUpUiState())
-    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(SignUpFormState())
+    val uiState: StateFlow<SignUpFormState> = _uiState.asStateFlow()
 
     fun onEmailChanged(value: String) {
         _uiState.update { it.copy(email = value) }

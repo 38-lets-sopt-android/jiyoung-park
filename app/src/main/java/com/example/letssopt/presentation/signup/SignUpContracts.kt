@@ -3,7 +3,7 @@ package com.example.letssopt.presentation.signup
 import androidx.annotation.StringRes
 import com.example.letssopt.core.base.UiEffect
 
-data class SignUpUiState(
+data class SignUpFormState(
     val email: String = "",
     val password: String = "",
     val passwordConfirm: String = "",
