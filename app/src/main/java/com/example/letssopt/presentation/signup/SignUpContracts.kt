@@ -4,9 +4,13 @@ import androidx.annotation.StringRes
 import com.example.letssopt.core.base.UiEffect
 
 data class SignUpFormState(
+    val loginId: String = "",
     val email: String = "",
     val password: String = "",
     val passwordConfirm: String = "",
+    val name: String = "",
+    val age: Int = 0,
+    val part: String = "",
 )
 
 sealed interface SignUpUiEffect: UiEffect {

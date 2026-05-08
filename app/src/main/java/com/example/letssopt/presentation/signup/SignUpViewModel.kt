@@ -5,7 +5,8 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.letssopt.R
-import com.example.letssopt.data.auth.AuthRepository
+import com.example.letssopt.data.remote.RetrofitClient
+import com.example.letssopt.data.remote.dto.request.SignUpRequestDto
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -32,8 +33,8 @@ class SignUpViewModel : ViewModel() {
     private val _uiStates = MutableStateFlow<SignUpUiState>(SignUpUiState.Idle)
     val uiStates: StateFlow<SignUpUiState> = _uiStates.asStateFlow()
 
-    fun onEmailChanged(value: String) {
-        _uiState.update { it.copy(email = value) }
+    fun onIdChanged(value: String) {
+        _uiState.update { it.copy(loginId = value) }
     }
 
     fun onPasswordChanged(value: String) {
@@ -42,6 +43,22 @@ class SignUpViewModel : ViewModel() {
 
     fun onPasswordConfirmChanged(value: String) {
         _uiState.update { it.copy(passwordConfirm = value) }
+    }
+
+    fun onNameChanged(value: String) {
+        _uiState.update { it.copy(name = value) }
+    }
+
+    fun onEmailChanged(value: String) {
+        _uiState.update { it.copy(email = value) }
+    }
+
+    fun onAgeChanged(value: Int) {
+        _uiState.update { it.copy(age = value) }
+    }
+
+    fun onPartChanged(value: String) {
+        _uiState.update { it.copy(part = value) }
     }
 
     private val _uiEffect = MutableSharedFlow<SignUpUiEffect>()
@@ -54,7 +71,11 @@ class SignUpViewModel : ViewModel() {
     }
 
     val registerEnabled: StateFlow<Boolean> = uiState
-        .map { it.email.isNotBlank() && it.password.isNotBlank() && it.passwordConfirm.isNotBlank() }
+        .map {
+            it.loginId.isNotBlank() && it.password.isNotBlank()
+                    && it.passwordConfirm.isNotBlank() && it.name.isNotBlank()
+                    && it.email.isNotBlank() && it.age > 0
+                    && it.part.isNotBlank() }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -62,30 +83,57 @@ class SignUpViewModel : ViewModel() {
         )
 
     fun onSignUpClick() {
-        val emailText = uiState.value.email
+        val idText = uiState.value.loginId
         val passwordText = uiState.value.password
         val passwordConfirmText = uiState.value.passwordConfirm
+        val nameText = uiState.value.name
+        val emailText = uiState.value.email
+        val ageText = uiState.value.age
+        val partText = uiState.value.part
 
-        val error = validateRegisterInputs(emailText, passwordText, passwordConfirmText)
+        val error = validateRegisterInputs(
+            passwordText = passwordText,
+            passwordConfirmText = passwordConfirmText,
+            emailText = emailText,
+        )
         if (error != null) {
             return sendEffect(SignUpUiEffect.ShowToast(error.message))
         }
 
-        handleRegister(emailText, passwordText)
+        handleRegister(
+            idText = idText,
+            passwordText = passwordText,
+            nameText = nameText,
+            emailText = emailText,
+            ageText = ageText,
+            partText = partText,
+        )
     }
 
     private fun handleRegister(
-        emailText: String,
+        idText: String,
         passwordText: String,
-    ) {
-        AuthRepository.register(emailText, passwordText)
-            .onSuccess {
-                sendEffect(SignUpUiEffect.ShowToast(R.string.signup_msg_success))
-                sendEffect(SignUpUiEffect.BackToLogin)
+        nameText: String,
+        emailText: String,
+        ageText: Int,
+        partText: String,
+    ) = viewModelScope.launch {
+        _uiStates.value = SignUpUiState.Loading
+
+        runCatching {
+            RetrofitClient.apiService.signUp(
+                SignUpRequestDto(idText, passwordText, nameText, emailText, ageText, partText)
+            )
+        }.onSuccess { response ->
+            if (response.isSuccessful) {
+                _uiStates.value = SignUpUiState.Success
+            } else {
+                val message = response.body()?.message ?: "회원가입에 실패했습니다"
+                _uiStates.value = SignUpUiState.Error(message)
             }
-            .onFailure {
-                sendEffect(SignUpUiEffect.ShowToast(R.string.signup_msg_fail))
-            }
+        }.onFailure { e ->
+            _uiStates.value = SignUpUiState.Error(e.message ?: "네트워크 오류가 발생했습니다")
+        }
     }
 
     private fun validateRegisterInputs(

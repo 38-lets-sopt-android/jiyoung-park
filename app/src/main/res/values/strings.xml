@@ -25,6 +25,7 @@
     <string name="login_msg_fail_emailnotfound">존재하지 않는 이메일입니다</string>
     <string name="login_msg_fail_needregister">회원가입을 먼저 수행해주세요</string>
     <string name="login_msg_fail_passwordmismatch">비밀번호가 올바르지 않습니다</string>
+    <string name="login_msg_fail_inputmismatch">아이디 또는 비밀번호가 올바르지 않습니다</string>
     <string name="login_msg_fail">로그인에 실패했습니다</string>
 
     <!-- SignUp -->
