@@ -124,8 +124,9 @@ private fun LoginScreen(
             onValueChange = onPasswordChanged,
             label = "비밀번호",
             placeholder = "비밀바나나를 입력하세요",
+            isPassword = true,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next,
             ),
         )

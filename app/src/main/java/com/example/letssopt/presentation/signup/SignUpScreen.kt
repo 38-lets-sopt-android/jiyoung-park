@@ -121,6 +121,7 @@ private fun SignUpScreen(
             onValueChange = onPasswordChanged,
             label = "비밀번호",
             placeholder = "비밀번호를 입력하세요",
+            isPassword = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next,
@@ -134,6 +135,7 @@ private fun SignUpScreen(
             onValueChange = onPasswordConfirmChanged,
             label = "비밀번호 확인",
             placeholder = "비밀번호를 다시 입력하세요",
+            isPassword = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next,
