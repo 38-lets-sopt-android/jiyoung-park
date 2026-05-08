@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.example.letssopt.core.base.UiEffect
 
 data class LoginFormState(
-    val email: String = "",
+    val loginId: String = "",
     val password: String = "",
 )
 

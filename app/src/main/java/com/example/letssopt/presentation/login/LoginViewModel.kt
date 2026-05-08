@@ -3,8 +3,8 @@ package com.example.letssopt.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.letssopt.R
-import com.example.letssopt.data.auth.AuthException
-import com.example.letssopt.data.auth.AuthRepository
+import com.example.letssopt.data.remote.RetrofitClient
+import com.example.letssopt.data.remote.dto.request.SignInRequestDto
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,8 +24,8 @@ class LoginViewModel : ViewModel() {
     private val _uiStates = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val uiStates: StateFlow<LoginUiState> = _uiStates.asStateFlow()
 
-    fun onEmailChanged(value: String) {
-        _uiState.update { it.copy(email = value) }
+    fun onIdChanged(value: String) {
+        _uiState.update { it.copy(loginId = value) }
     }
 
     fun onPasswordChanged(value: String) {
@@ -42,7 +42,7 @@ class LoginViewModel : ViewModel() {
 
     // 모두 입력됐을 때만 true -> 로그인 버튼 활성화
     val loginEnabled: StateFlow<Boolean> = uiState
-        .map { it.email.isNotBlank() && it.password.isNotBlank() }
+        .map { it.loginId.isNotBlank() && it.password.isNotBlank() }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -50,36 +50,40 @@ class LoginViewModel : ViewModel() {
         )
 
     fun onLoginClick() {
-        val emailText = uiState.value.email
+        val idText = uiState.value.loginId
         val passwordText = uiState.value.password
 
-        handleLogin(emailText, passwordText)
+        handleLogin(idText, passwordText)
     }
 
     private fun handleLogin(
-        emailText: String,
+        idText: String,
         passwordText: String,
-    ) {
-        AuthRepository.login(emailText, passwordText)
-            .onSuccess {
+    ) = viewModelScope.launch{
+        _uiStates.value = LoginUiState.Loading
+
+        runCatching {
+            RetrofitClient.apiService.signIn(
+                SignInRequestDto(idText, passwordText)
+            )
+        }.onSuccess { response ->
+            if (response.isSuccessful){
+                _uiStates.value = LoginUiState.Success
                 sendEffect(LoginUiEffect.ShowToast(R.string.login_msg_success))
                 sendEffect(LoginUiEffect.NavigateToMain)
+            } else {
+                val message = response.body()?.message ?: "로그인에 실패했습니다"
+                _uiStates.value = LoginUiState.Error(message)
+                sendEffect(LoginUiEffect.ShowToast(R.string.login_msg_fail))
             }
-            .onFailure { error ->
-                val message = if (error is AuthException) {
-                    when (error) {
-                        is AuthException.EmailNotFound -> R.string.login_msg_fail_emailnotfound
-                        is AuthException.NoAccountFound -> R.string.login_msg_fail_needregister
-                        is AuthException.PasswordMismatch -> R.string.login_msg_fail_passwordmismatch
-                    }
-                } else R.string.login_msg_fail
-                sendEffect(LoginUiEffect.ShowToast(message))
-            }
+        }.onFailure { e ->
+            _uiStates.value = LoginUiState.Error(e.message ?: "네트워크 오류가 발생했습니다")
+        }
     }
 
     // 회원가입 텍스트 클릭
     fun onRegisterClick() {
-        _uiState.update { it.copy(email = "", password = "") }
+        _uiState.update { it.copy(loginId = "", password = "") }
         sendEffect(LoginUiEffect.NavigateToRegister)
     }
 }

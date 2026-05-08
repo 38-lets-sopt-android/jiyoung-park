@@ -59,7 +59,7 @@ fun LoginRoute(
         loginEnabled = loginEnabled,
         onLoginClick = viewModel::onLoginClick,
         onRegisterClick = viewModel::onRegisterClick,
-        onEmailChanged = viewModel::onEmailChanged,
+        onIdChanged = viewModel::onIdChanged,
         onPasswordChanged = viewModel::onPasswordChanged,
         modifier = modifier,
     )
@@ -67,7 +67,7 @@ fun LoginRoute(
 
 @Composable
 private fun LoginScreen(
-    onEmailChanged: (String) -> Unit,
+    onIdChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     uiState: LoginFormState,
     loginEnabled: Boolean,
@@ -107,12 +107,12 @@ private fun LoginScreen(
         Spacer(modifier = Modifier.height(36.dp))
 
         LetsLabeledTextField(
-            value = uiState.email,
-            onValueChange = onEmailChanged,
-            label = "이메일",
-            placeholder = "이메일 주소를 입력하세요",
+            value = uiState.loginId,
+            onValueChange = onIdChanged,
+            label = "아이디",
+            placeholder = "아이디를 입력하세요",
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next,
             ),
         )
@@ -123,7 +123,7 @@ private fun LoginScreen(
             value = uiState.password,
             onValueChange = onPasswordChanged,
             label = "비밀번호",
-            placeholder = "비밀바나나를 입력하세요",
+            placeholder = "비밀번호를 입력하세요",
             isPassword = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
