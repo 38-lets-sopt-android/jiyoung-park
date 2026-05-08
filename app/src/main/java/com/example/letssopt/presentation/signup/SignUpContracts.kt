@@ -9,7 +9,7 @@ data class SignUpFormState(
     val password: String = "",
     val passwordConfirm: String = "",
     val name: String = "",
-    val age: Int = 0,
+    val age: String = "",
     val part: String = "",
 )
 

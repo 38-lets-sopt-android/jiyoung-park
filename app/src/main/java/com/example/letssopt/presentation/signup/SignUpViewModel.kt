@@ -53,7 +53,7 @@ class SignUpViewModel : ViewModel() {
         _uiState.update { it.copy(email = value) }
     }
 
-    fun onAgeChanged(value: Int) {
+    fun onAgeChanged(value: String) {
         _uiState.update { it.copy(age = value) }
     }
 
@@ -74,7 +74,7 @@ class SignUpViewModel : ViewModel() {
         .map {
             it.loginId.isNotBlank() && it.password.isNotBlank()
                     && it.passwordConfirm.isNotBlank() && it.name.isNotBlank()
-                    && it.email.isNotBlank() && it.age > 0
+                    && it.email.isNotBlank() && it.age.isNotBlank()
                     && it.part.isNotBlank() }
         .stateIn(
             scope = viewModelScope,
@@ -88,7 +88,7 @@ class SignUpViewModel : ViewModel() {
         val passwordConfirmText = uiState.value.passwordConfirm
         val nameText = uiState.value.name
         val emailText = uiState.value.email
-        val ageText = uiState.value.age
+        val ageText = uiState.value.age.toInt()
         val partText = uiState.value.part
 
         val error = validateRegisterInputs(
@@ -127,9 +127,12 @@ class SignUpViewModel : ViewModel() {
         }.onSuccess { response ->
             if (response.isSuccessful) {
                 _uiStates.value = SignUpUiState.Success
+                sendEffect(SignUpUiEffect.ShowToast(R.string.signup_msg_success))
+                sendEffect(SignUpUiEffect.BackToLogin)
             } else {
                 val message = response.body()?.message ?: "회원가입에 실패했습니다"
                 _uiStates.value = SignUpUiState.Error(message)
+                sendEffect(SignUpUiEffect.ShowToast(R.string.signup_msg_fail))
             }
         }.onFailure { e ->
             _uiStates.value = SignUpUiState.Error(e.message ?: "네트워크 오류가 발생했습니다")
