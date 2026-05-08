@@ -21,6 +21,9 @@ class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginFormState())
     val uiState: StateFlow<LoginFormState> = _uiState.asStateFlow()
 
+    private val _uiStates = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
+    val uiStates: StateFlow<LoginUiState> = _uiStates.asStateFlow()
+
     fun onEmailChanged(value: String) {
         _uiState.update { it.copy(email = value) }
     }
