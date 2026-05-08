@@ -14,9 +14,9 @@ data class SignInResponseDto (
     @SerialName("code")
     val code: String,
     @SerialName("data")
-    val data: Int,
+    val data: UserData,
     @SerialName("meta")
-    val meta: UserData? = null,
+    val meta: String? = null,
 )
 
 @Serializable
